@@ -16,7 +16,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
  */
 public class LoginTest {
     private ChromeDriver driver;
-    private String prefix = "https://digitalnizena.cz/rukovoditel/";
+    private String PREFIX = "https://digitalnizena.cz/rukovoditel/";
 
     @Before
     public void init() {
@@ -34,57 +34,77 @@ public class LoginTest {
 
     @After
     public void tearDown() {
-       driver.close();
+//  driver.close();
     }
 
 
     @Test
-    public void validLogin() {
-        //Given + When
-        prihlasSe("rukovoditel","vse456ru");
-        //Then
+    public void valid_login(){
+
+        //GIVEN + WHEN
+        driver.get(PREFIX);
+        //User login
+        WebElement usernameInput = driver.findElement(By.name("username"));
+        usernameInput.sendKeys("rukovoditel");
+        WebElement passwordInput = driver.findElement(By.name("password"));
+        passwordInput.sendKeys("vse456ru");
+        WebElement loginButton = driver.findElement(By.cssSelector(".btn"));
+        loginButton.click();
         Assert.assertTrue(driver.getTitle().startsWith("Rukovoditel | Dashboard"));
+        //passwordInput.sendKeys(Keys.ENTER);
+
+        driver.close();
     }
 
+
     @Test
-    public void invalidLogin() {
-        //Given + When
-        prihlasSe("admin","admin");
-        //Then
+    public void invalid_login(){
+
+        //GIVEN + WHEN
+        driver.get(PREFIX);
+        //User login
+        WebElement usernameInput = driver.findElement(By.name("username"));
+        usernameInput.sendKeys("rukovoditel");
+        WebElement passwordInput = driver.findElement(By.name("password"));
+        passwordInput.sendKeys("bad");
+        WebElement loginButton = driver.findElement(By.cssSelector(".btn"));
+        loginButton.click();
+        //passwordInput.sendKeys(Keys.ENTER);
         WebElement alert = driver.findElement(By.cssSelector(".alert"));
         Assert.assertTrue(!driver.getTitle().startsWith("Rukovoditel | Dashboard"));
         Assert.assertTrue(driver.getTitle().startsWith("Rukovoditel"));
-        Assert.assertTrue(alert.isDisplayed());
+        Assert.assertTrue(alert != null);
+
+        driver.close();
     }
 
     @Test
-    public void userLogout() {
-        //Given
-        prihlasSe("rukovoditel","vse456ru");
+    public void user_logOff(){
+
+        //GIVEN
+        driver.get(PREFIX);
+        //User login
+        WebElement usernameInput = driver.findElement(By.name("username"));
+        usernameInput.sendKeys("rukovoditel");
+        WebElement passwordInput = driver.findElement(By.name("password"));
+        passwordInput.sendKeys("vse456ru");
+        WebElement loginButton = driver.findElement(By.cssSelector(".btn"));
+        loginButton.click();
         Assert.assertTrue(driver.getTitle().startsWith("Rukovoditel | Dashboard"));
 
-        //When
-        driver.findElement(By.cssSelector(".username")).click();
-        driver.findElement(By.cssSelector(".username")).click();
+        //WHEN
+        //Logoff
+        WebElement menu = driver.findElement(By.className("username"));
+        menu.click();
         WebDriverWait wait = new WebDriverWait(driver, 1);
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("a[href*='logoff']")));
         driver.findElement(By.cssSelector("a[href*='logoff']")).click();
 
-        //Then
+        //THEN
         Assert.assertTrue(driver.getTitle().startsWith("Rukovoditel"));
-        Assert.assertTrue(!driver.getTitle().startsWith("Rukovoditel | Dashboard"));
-        WebElement nadpis = driver.findElement(By.cssSelector(".form-title"));
-        Assert.assertTrue(nadpis.getText().equals("Login"));
-    }
+        WebElement h3 = driver.findElement(By.className("form-title"));
+        Assert.assertTrue(h3.getText().equals("Login"));
 
-    public void prihlasSe(String jmeno,String heslo)
-    {
-        driver.get(prefix);
-        WebElement searchInput = driver.findElement(By.name("username"));
-        searchInput.sendKeys(jmeno);
-        searchInput = driver.findElement(By.name("password"));
-        searchInput.sendKeys(heslo);
-        //searchInput.sendKeys(Keys.ENTER);
-        driver.findElement(By.cssSelector(".btn")).click();
+        driver.close();
     }
 }
