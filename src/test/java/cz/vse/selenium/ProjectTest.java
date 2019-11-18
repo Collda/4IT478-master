@@ -175,7 +175,7 @@ public class ProjectTest {
         elements = driver.findElements(By.cssSelector("[class='table table-striped table-bordered table-hover'] tr"));
         Assert.assertTrue(!elements.contains(helpRow));
 
-        //driver.close();
+        driver.close();
 
 
         //Some failed attempts
