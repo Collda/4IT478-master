@@ -167,8 +167,8 @@ public class ProjectTest {
         Assert.assertTrue(helpRow != null);
 
         // Deleting the project and check deletion
-        wait = new WebDriverWait(driver, 2);
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("uniform-delete_confirm")));
+        //wait = new WebDriverWait(driver, 2);
+        //wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("uniform-delete_confirm"))); obcas je obcas neni
         driver.findElement(By.id("delete_confirm")).click();
         driver.findElement(By.className("btn-primary-modal-action")).click();
         elements = driver.findElements(By.cssSelector("[class='table table-striped table-bordered table-hover'] tr"));
