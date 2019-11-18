@@ -46,6 +46,53 @@ public class ProjectTest {
     }
 
     @Test
+    public void create_project() throws InterruptedException {
+        driver.get(PREFIX);
+
+        WebElement usernameInput = driver.findElement(By.name("username"));
+        usernameInput.sendKeys("rukovoditel");
+        WebElement passwordInput = driver.findElement(By.name("password"));
+        passwordInput.sendKeys("vse456ru");
+        WebElement loginButton = driver.findElement(By.cssSelector(".btn"));
+        loginButton.click();
+        Assert.assertTrue(driver.getTitle().startsWith("Rukovoditel | Dashboard"));
+
+        //passwordInput.sendKeys(Keys.ENTER);
+        //driver.findElement(By.cssSelector("a[href*='logoff']")).click();
+
+        WebElement menu = driver.findElement(By.className("fa-reorder"));
+        menu.click();
+
+        WebElement createButton = driver.findElement(By.className("btn-primary"));
+        createButton.click();
+
+        /*WebElement saveButton = driver.findElement(By.cssSelector("button"));
+        String typeOfElement = saveButton.getAttribute("type");
+        saveButton.click();*/
+
+        //Thread.sleep(2000);
+
+        /*WebElement saveButton = driver.findElement(By.className("btn-primary-modal-action"));
+        WebDriverWait wait = new WebDriverWait(driver, 2);
+        wait.until(ExpectedConditions.visibilityOf(saveButton));
+        saveButton.click();*/
+
+        WebDriverWait wait = new WebDriverWait(driver, 2);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("btn-primary-modal-action")));
+        WebElement saveButton = driver.findElement(By.className("btn-primary-modal-action"));
+        saveButton.click();
+
+
+        WebElement error = driver.findElement(By.id("fields_158-error"));
+        Assert.assertTrue(error.getText().equals("This field is required!"));
+
+        driver.close();
+
+
+    }
+
+
+    @Test
     public void create_NewProject() throws InterruptedException {
 
         //GIVEN
