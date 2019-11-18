@@ -27,8 +27,8 @@ public class ProjectTest {
 
     @Before
     public void init() {
-        //System.setProperty("webdriver.chrome.driver", "src/test/resources/drivers/chromedriver.exe");
-        //driver = new ChromeDriver();
+        System.setProperty("webdriver.chrome.driver", "src/test/resources/drivers/chromedriver.exe");
+        driver = new ChromeDriver();
         ChromeOptions cho = new ChromeOptions();
         cho.addArguments("--headless");
         cho.addArguments("start-maximized");
@@ -169,13 +169,13 @@ public class ProjectTest {
         // Deleting the project and check deletion
         wait = new WebDriverWait(driver, 2);
         //wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("uniform-delete_confirm")));
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("btn-primary-modal-action")));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("btn-primary-modal-action")));
         //driver.findElement(By.id("delete_confirm")).click();
         driver.findElement(By.className("btn-primary-modal-action")).click();
         elements = driver.findElements(By.cssSelector("[class='table table-striped table-bordered table-hover'] tr"));
         Assert.assertTrue(!elements.contains(helpRow));
 
-        driver.close();
+        //driver.close();
 
 
         //Some failed attempts
